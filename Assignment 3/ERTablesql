@@ -1,0 +1,69 @@
+DROP TABLE Department CASCADE CONSTRAINTS;
+DROP TABLE JB_User CASCADE CONSTRAINTS;
+DROP TABLE Qualifications;
+DROP TABLE Accounts;
+DROP TABLE Jobs;
+DROP TABLE Employee;
+DROP TABLE HR;
+
+CREATE TABLE Department(
+            DepartManager VARCHAR2(25),
+            DepartName VARCHAR2(25),
+            NoEmployees NUMBER,
+            DepartID VARCHAR2(10),
+            PRIMARY KEY(DepartID)
+);
+            
+CREATE TABLE JB_User(
+            UPassword VARCHAR2(25),
+            UserID VARCHAR2(25) PRIMARY KEY
+);
+            
+CREATE TABLE Qualifications(
+            Education VARCHAR2(25),
+            Resumes VARCHAR2(1000),
+            Experience VARCHAR2(25),
+            CoverLetter VARCHAR2(1000),
+            License VARCHAR2(25),
+            QualUserID VARCHAR(10) NOT NULL REFERENCES JB_User(UserID), --Foreign ID
+            QualificationID VARCHAR(10) PRIMARY KEY --Primary ID
+);
+
+CREATE TABLE Accounts(
+            Subscription VARCHAR(25),
+            Age Number,
+            Address VARCHAR2(25),
+            Phone Number,
+            AName VARCHAR2(25),
+            AccountUserID VARCHAR2(25) PRIMARY KEY, --Primary Key
+            AccUserID VARCHAR(10) REFERENCES JB_User(UserID) -- Foreign Key
+);
+            
+CREATE TABLE Jobs(
+            WorkPeriod NUMBER,
+            Company VARCHAR2(25),
+            Salary NUMBER,
+            JobTitle VARCHAR(25),
+            JLocation VARCHAR(25),
+            Jobtype VARCHAR(25),
+            JobID VARCHAR(10),
+            PRIMARY KEY(JobID)
+);
+            
+CREATE TABLE Employee(
+            StartDate VARCHAR2(25),
+            EmName VARCHAR2(25),
+            Title VARCHAR2(25),
+            EmployeeID VARCHAR2(25) PRIMARY KEY
+);
+            
+CREATE TABLE HR(            
+            CompanyID VARCHAR2(10),
+            Results VARCHAR2(25),
+            Interview VARCHAR2(25),
+            HR_ID VARCHAR(10) PRIMARY KEY, --Primary Key
+            HRUserID VARCHAR(10) REFERENCES JB_User(UserID) --Foreign Key
+);
+                
+
+
