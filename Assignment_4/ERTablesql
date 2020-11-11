@@ -1,0 +1,162 @@
+DROP TABLE Department CASCADE CONSTRAINTS; --semi colon = delimiter; separates 2 commands before and after the semi colon
+DROP TABLE JB_User CASCADE CONSTRAINTS;
+DROP TABLE Qualifications;
+DROP TABLE Accounts;
+DROP TABLE Jobs;
+DROP TABLE Employee;
+DROP TABLE HR;
+
+CREATE TABLE Department(
+            depart_id VARCHAR2(10 CHAR),
+            depart_manager VARCHAR2(25 CHAR) NOT NULL,
+            depart_name VARCHAR2(25 CHAR),
+            num_employees NUMBER DEFAULT 0,
+            CONSTRAINT depart_pk PRIMARY KEY(depart_id)
+);
+
+            INSERT INTO Department 
+            VALUES ('Admin1','Ashwin','Adminstration',10);
+
+            INSERT INTO Department 
+            VALUES ('Admin2','Edmond','Help Desk',30);
+
+            INSERT INTO Department 
+            VALUES ('Admin3','Brian','Human Resources',15);
+
+            SELECT * FROM Department;
+            
+CREATE TABLE JB_User(
+            user_id VARCHAR2(25 CHAR),
+            user_pass VARCHAR2(25 CHAR) NOT NULL,
+            CONSTRAINT users_pk PRIMARY KEY(user_id)--Same as PRIMARY KEY
+);
+
+            INSERT INTO JB_User 
+            VALUES ('User1','Ashwin123');
+
+            INSERT INTO JB_User
+            VALUES ('User2','Edmond123');
+
+            INSERT INTO JB_User 
+            VALUES ('User3','Brian123');
+            
+            SELECT user_id, 'This users password is :', user_pass FROM JB_User;
+
+   
+CREATE TABLE Qualifications(
+            qualification_id VARCHAR2(10 CHAR),
+            education VARCHAR2(50 CHAR) DEFAULT 'HighSchool',
+            resumes VARCHAR2(25 CHAR) NOT NULL,
+            years_experience NUMBER,
+            coverLetter VARCHAR2(1000 CHAR) UNIQUE,
+            license VARCHAR2(25 CHAR) UNIQUE,
+            CONSTRAINT qualification_pk PRIMARY KEY (qualification_id),--Primary ID
+            CONSTRAINT Qualifications_JBUser_fk FOREIGN KEY (resumes) REFERENCES JB_User(user_id) --Foreign ID
+            ON DELETE CASCADE
+);
+            INSERT INTO Qualifications 
+            VALUES ('Serial1','Undergraduate','User1',6,'CoverTitle','AA31');
+
+            INSERT INTO Qualifications 
+            VALUES ('Serial2','Masters','User2',14,'CoverTitle2','CA38');
+
+            INSERT INTO Qualifications 
+            VALUES ('Serial3','pHD','User3',2,'CoverTitle3','BB69');
+            
+            SELECT * FROM Qualifications WHERE years_experience >= 5;
+
+CREATE TABLE Accounts(
+            account_userID VARCHAR2 (25 CHAR),
+            subscription VARCHAR2(25 CHAR) DEFAULT 'Free',
+            age NUMBER,
+            address VARCHAR2(25 CHAR),
+            phone NUMBER UNIQUE,
+            account_name VARCHAR2(25 CHAR),
+            CONSTRAINT useraccountID_pk PRIMARY KEY (account_userID), --Primary Key
+            CONSTRAINT account_JBUser_fk FOREIGN KEY (account_name) REFERENCES JB_User(user_id) -- Foreign Key
+);
+
+            INSERT INTO Accounts
+            VALUES ('ID#1','Premium',3,'7 Eglinton',6478720202,'User1');
+            
+            INSERT INTO Accounts
+            VALUES ('ID#2','Free',9,'18 Houseview',6478724302,'User2');
+            
+            INSERT INTO Accounts
+            VALUES ('ID#3','Student',1,'6 FreeMarket',6474520201,'User3');
+            
+            SELECT * FROM Accounts WHERE age >= 1 ORDER BY age DESC;
+            
+
+            
+CREATE TABLE Jobs(
+            job_id VARCHAR2 (20 CHAR),
+            work_period NUMBER,
+            company VARCHAR2(25 CHAR),
+            salary NUMBER,
+            job_title VARCHAR2(25 CHAR),
+            job_location VARCHAR2(25 CHAR),
+            job_type VARCHAR2(25 CHAR),
+            CONSTRAINT jobs_pk PRIMARY KEY (job_id)--primary key
+);
+
+            INSERT INTO Jobs
+            VALUES ('Job1', 5 , 'Samsung' , 500 , 'HeadEngineer' , 'Cupertino' ,'Remote');
+            
+            INSERT INTO Jobs
+            VALUES ('Job2',18,'Apple',1800,'Janitor','San Jose','In-person');         
+            
+            INSERT INTO Jobs
+            VALUES ('Job3',2,'Facebook',900,'Tech Support','Toronto','Temporary');
+            
+            SELECT company, job_location FROM Jobs ORDER BY company DESC, job_location ASC;
+            
+            
+            
+CREATE TABLE Employee(
+            employee_id VARCHAR2 (25 CHAR),
+            start_date VARCHAR2(25 CHAR),
+            employee_name VARCHAR2(25 CHAR),
+            employee_title VARCHAR2(25 CHAR),
+            CONSTRAINT employee_pk PRIMARY KEY (employee_id)
+);
+
+            INSERT INTO Employee
+            VALUES ('Employee1','May 21', 'Sam', 'Apprentice');
+            
+            INSERT INTO Employee
+            VALUES ('Employee2','July 19', 'Kevin', 'Full-time');
+            
+            INSERT INTO Employee
+            VALUES ('Employee3','September 1', 'Steve', 'Full-time');
+            
+            SELECT employee_title AS Worker_Type 
+            FROM Employee ORDER BY employee_title;
+            
+
+
+            
+CREATE TABLE HR(            
+            HR_id VARCHAR (10 CHAR),
+            company_id VARCHAR2(10 CHAR),
+            results VARCHAR2(50 CHAR),
+            interview VARCHAR2(100 CHAR),
+            CONSTRAINT HR_pk PRIMARY KEY (HR_id), --Primary Key
+            CONSTRAINT HR_JBUser_fk FOREIGN KEY (company_id) REFERENCES JB_User(user_id) --Foreign Key
+);
+
+            INSERT INTO HR
+            VALUES ('HR#1','User1','Rejected','Complete');
+            
+            INSERT INTO HR
+            VALUES ('HR#2','User2','Ongoing','Incomplete');
+            
+            INSERT INTO HR
+            VALUES ('HR#3','User3','Hired','Complete');
+            
+            SELECT HR_id, interview FROM HR WHERE NOT (interview = 'Incomplete');
+
+
+
+                
+
